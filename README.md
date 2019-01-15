@@ -3,6 +3,7 @@ A little game I'm making where you adventure into the unknown! Very much still a
 So far: The player can move around, interact with the NPCs, and complete a simple quest with branch choices. 
 There is also an inventory and list of quests that are updated by the actions of the player. 
 
-mov - {up, down, left, right} --- move the character 
-questlist --- opens up a list of current quests
-inventory --- opens up a list of items in your inventory
+Commands: 
+1. mov {up, down, left, right} --- move the character 
+2. questlist --- opens up a list of current quests
+3. inventory --- opens up a list of items in your inventory
