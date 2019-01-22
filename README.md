@@ -7,3 +7,7 @@ Commands:
 1. mov {up, down, left, right} --- move the character 
 2. questlist --- opens up a list of current quests
 3. inventory --- opens up a list of items in your inventory
+
+01/22/19 - update: 
+  Finished Cat quest, debugged dialogue. 
+  Quest engine is pretty much finished.
