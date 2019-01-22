@@ -28,7 +28,7 @@ public class Objects {
 				break;
 			case 'p':
 				npcInteractions();
-				// nonStaticNpcInteractions();
+				Quests.nonStaticInteractions(this.mapNumber, this.objChar, this.player);
 				break;
 			case 't':
 				npcInteractions();
@@ -90,9 +90,9 @@ public class Objects {
 			System.out.println(Quests.nonStaticDialogue(objChar, player)[i]);
 			System.out.println("\nPress enter to continue");
 			in.nextLine();
-			//throw new NullPointerException("poop");
 		}
 		Quests.nonStaticInteractions(mapNumber, objChar, this.player);
+	
 		
 	}
 	

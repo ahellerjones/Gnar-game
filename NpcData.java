@@ -71,9 +71,13 @@ public class NpcData {
 		String[][] questLogs = new String[40][];
 		
 		//___Marcy's quest___\\
-		String[] marcyQuest = new String[2];
+		String[] marcyQuest = new String[5];
 		marcyQuest[0] = "I need to find Marcy's cat... Maybe I'll go look in the surrounding areas";
 		marcyQuest[1] = "I found Marcy's cat. Just need to bring it back to her now.";
+		marcyQuest[2] = "I'm taking the cat back to Marcy for my reward.";
+		marcyQuest[3] = "I took the cat back to Marcy and got my reward of 7 Hides.\t\t QUEST COMPLETE";
+		marcyQuest[4] = "I let the cat be and now get 2 Hides instead of 1 when I kill cows.\t\t QUEST COMPLETE";
+			
 		questLogs[27] = marcyQuest;
 		
 		return questLogs[mapNumber];
