@@ -135,6 +135,10 @@ public class Player {
 					InventoryItems cat = new InventoryItems(13, "Marcy's Cat", this);
 					this.addItem(cat);
 					m.increaseIndex();
+					this.quests[this.getQuestArrayNumber(27)].decisionInt = 1; 
+				}
+				if(input3.equals("p")) {
+					this.changeMap(27);
 				}
 				break;
 			case "inventory":
@@ -234,6 +238,7 @@ public class Player {
 	}
 		
 	public void addItem(InventoryItems item) {
+		System.out.println(item.itemName + " added to inventory");
 		this.inventory[inventoryIndex] = item;
 	}
 	public void removeItem(InventoryItems item) {
