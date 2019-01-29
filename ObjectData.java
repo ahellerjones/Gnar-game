@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 public class ObjectData {
 	
@@ -112,5 +113,106 @@ public class ObjectData {
 		}
 		
 		return wantsToTrade[mapNumber];
+	}
+	
+	public static InventoryItems[] traderInventories(int mapNumber, Player p) {
+		switch (mapNumber) {
+		/*
+		 * InventoryItems: 	int mapNumber, String itemName, Player player, int price, Attributes itemAttributes
+		 * Attributes: 	int attack, int strength, int hpModifier, int hpHeal, int equipSlot, int quantitySold		 	
+		 */
+		
+		case 27:
+				Attributes p_b = new Attributes(5, 5, 0, 0, 3, 1);
+				InventoryItems Plastic_Blade = new InventoryItems(-2, "Plastic Blade", p, 3, p_b);
+				Attributes t_l = new Attributes(0, 0, 0, 3, 0, 2);
+				InventoryItems Turkey_Leg = new InventoryItems(-3, "Turkey Leg", p, 3, t_l);
+				InventoryItems[] inv27 = {Plastic_Blade, Turkey_Leg} ;
+				return inv27;
+				
+		}
+		return null; //stub 
+		
+	}
+	public static InventoryItems printInv(InventoryItems[] inventory, Player p) {
+		Scanner in = new Scanner(System.in);
+		String[] inventoryStringList = new String[inventory.length];
+		for(int k = 0; k < inventory.length; k++) {
+			inventoryStringList[k] = String.format(
+					"\n|%dx %d. %s \t%d Hides|", 
+						k + 1, inventory[k].attributes.quantitySold, inventory[k].itemName, inventory[k].price);
+		}
+		
+		int tester = 0;
+		for(int i = 0; i < inventory.length; i++) {
+			if(inventoryStringList[i].length() > tester) {
+				tester = inventoryStringList[i].length();
+			}
+		}
+		for(int j = 0; j < tester + 3; j++) {
+			System.out.print("-");
+		}
+		for(int k = 0; k < inventory.length; k++) {
+			System.out.print(inventoryStringList[k]);
+		}
+		System.out.println();
+		for(int j = 0; j < tester + 3; j++) {
+			System.out.print("-");
+		}
+		System.out.println();
+		System.out.println("\"Would you like to buy anything?\"\n"
+				+ "Enter \"buy itemNumber\" to buy, or \"stats itemNumber\" for the item attributes\n"
+				+ "or 'n' to exit");
+		String input = in.nextLine();
+		int jim;
+		if (input.indexOf(' ') == -1) {
+			jim = input.length();	
+		} else { 
+			jim = input.indexOf(' ');
+		}
+		String input1 = input.substring(0, jim) ;
+		switch(input1) { 
+			case("stats"):
+				String input2 = input.substring(input.indexOf(' ') + 1);
+				try {
+					Integer.parseInt(input2);
+				} catch(Exception e) { 
+					System.out.println("*** If you want to the stats of the item listed at 1., Enter "
+							+ "'stats 1' ***");
+					printInv(inventory, p);
+				}
+				int itemSelection = Integer.parseInt(input2) - 1;
+				if (itemSelection >= inventory.length) {
+					System.out.println("Not a valid selection, try again nerd");
+					printInv(inventory, p);
+					break;
+				} else {
+					Attributes.printAttributes(inventory[itemSelection].attributes);
+				}
+				printInv(inventory, p);
+				break;
+			case("buy"):
+//				InventoryItems hides = new InventoryItems(-1, "blart", p);
+//				p.buyItems(hides);
+//				
+//					
+				String input4 = input.substring(input.indexOf(' ') + 1);
+					try {
+						Integer.parseInt(input4);
+					} catch(Exception e) { 
+						System.out.println("*** If you want to buy the item listed at 1., Enter "
+								+ "'buy 1' ***");
+							return printInv(inventory, p);
+					}
+					int itemSelection1 = Integer.parseInt(input4) - 1;
+					if (itemSelection1 >= inventory.length) {
+						System.out.println("Not a valid selection, try again nerd");
+						return printInv(inventory, p);
+					} else {
+						p.buyItems(inventory[Integer.parseInt(input4) - 1]);
+					}
+		}
+		return null;
+				
 	}
 }

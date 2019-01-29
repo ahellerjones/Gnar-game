@@ -62,6 +62,7 @@ public class MapBuilder {
 					objects[27] = ob27;
 		
 					Objects c1 = new Objects('ø', 3, 3, 13, p);
+		
 		Objects[] ob13 = {c1};
 		objects[13] = ob13;
 		

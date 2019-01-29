@@ -12,6 +12,7 @@ public class Player {
 	public static Map			lastMap;
 	InventoryItems[] inventory = new InventoryItems[10];
 	public static int 			inventoryIndex;
+	InventoryItems[] equipment = new InventoryItems[5];
 	
 	public Player(Map currentMap, int a, int b) {
 		loc[0] = a;
@@ -133,34 +134,46 @@ public class Player {
 					Quests m = new Quests(27);
 					this.addQuest(m);
 					InventoryItems cat = new InventoryItems(13, "Marcy's Cat", this);
-					this.addItem(cat);
+					this.addItem(cat, 1);
 					m.increaseIndex();
 					this.quests[this.getQuestArrayNumber(27)].decisionInt = 1; 
 				}
 				if(input3.equals("p")) {
 					this.changeMap(27);
 				}
+				if(input3.equals("h")) {
+					InventoryItems hides = new InventoryItems(-1, "Hides", this);
+					this.addItem(hides, 12);
+				}
 				break;
 			case "inventory":
 				boolean go = true;
-				int i = 0;
+				
 				if(inventory[0] == null) { 
 					System.out.println("You don't have any items. Go explore and find some!");
 					break;
 				} else {
 					System.out.println("Inventory:");
 				}
-				while (go) {
-					
-					if (inventory[i] == null) {
-						break;
-					} else { 
-						System.out.printf("%d. %s\n", i + 1, inventory[i].itemName);
-					}
-					i++;
+				for (int i = 0; i < inventoryIndex; i++) {
+					System.out.printf("%d. %dx %s\n", i + 1, inventory[i].quantity, inventory[i].itemName);
 				}
 				break;
-			
+			case "equip":
+				String input5 = input.substring(input.indexOf(' ') + 1);
+				int inventoryNumber = Integer.parseInt(input5) - 1;
+				equip(this.inventory[inventoryNumber]);
+				break;
+			case "equipment":
+				//boolean go = true;
+				
+				for(int i = 1; i < 5; i++) {
+					if(equipment[i] == null) {
+						System.out.println(InventoryItems.equipSlot(i) + ": no item equipped");
+					} else {
+					System.out.printf("%d. %s: %s\n",i, InventoryItems.equipSlot(i), equipment[i + 1].itemName);
+					}
+				}
 			
 		}
 	}
@@ -223,31 +236,54 @@ public class Player {
 	}
 	
 	public void removeQuest(int questNumber) {
-//		for (int i = 0; i < this.quests.length; i++) {
-//			if (quests[i])
-//			if (quests[i].questNumber == questNumber) {
-//				Quests temp = new Quests(quests[i].questNumber);
-//				quests[i] = quests[9];
-//				quests[9] = null;
-//			}
-			
-			this.quests[this.getQuestArrayNumber(questNumber)] = quests[9];
-			quests[9] = null;
+		this.quests[this.getQuestArrayNumber(questNumber)] = quests[9];
+		quests[9] = null;
+	}
+		
+	public void addItem(InventoryItems item, int quantity) {
+		System.out.println(quantity + " " + 
+				item.itemName + " added to inventory");
+		if(checkInv(item)) {
+			this.inventory[invItemArrayNumber(item)].quantity += quantity;
+		} else {
+			this.inventory[inventoryIndex] = item;
+			this.inventory[inventoryIndex].quantity = quantity;
+			inventoryIndex++;
+		}
+	}
+	public void removeItem(InventoryItems item, int quantityToRemove) {
+		if(checkInv(item)) { 
+			inventory[invItemArrayNumber(item)].quantity -= quantityToRemove;
+			if (inventory[invItemArrayNumber(item)].quantity > 0) {
+				System.out.printf("%dx %s removed from inventory.\n",quantityToRemove,item.itemName);
+				return;
+			}
+		} 
+		System.out.println(inventory[invItemArrayNumber(item)].quantity + " Quantity");
+		final int indexOfItemToRemove = invItemArrayNumber(item);
+		final String itemRemoved = item.itemName;
+		inventory[indexOfItemToRemove] = null;
+		for (int i = indexOfItemToRemove + 1; i < 10; i++) {
+			if(inventory[i] == null) {
+				
+				inventoryIndex -= 1;
+				break;
+			} else {
+				
+				inventory[i - 1] = inventory[i];
+				
+				inventory[i] = null;
+			}
+		}
+		
+		System.out.println(itemRemoved + " removed from inventory.");
+		System.out.println(inventoryIndex);
+		
 		
 	
 	}
-		
-	public void addItem(InventoryItems item) {
-		System.out.println(item.itemName + " added to inventory");
-		this.inventory[inventoryIndex] = item;
-	}
-	public void removeItem(InventoryItems item) {
-		final int indexOfItemToRemove = invItemArrayNumber(item);
-		final String itemRemoved = item.itemName;
-		inventory[invItemArrayNumber(item)] = inventory[invItemArrayNumber(item) + 1];
-		inventory[indexOfItemToRemove + 1] = null;	
-		System.out.println(itemRemoved + " removed from inventory.");
-	}
+	
+	
 	
 	public Quests getQuest(int mapNumber) {
 		for (int i = 0; i < this.quests.length; i++) {
@@ -289,6 +325,17 @@ public class Player {
 		}
 		return false; 
 	}
+	public boolean checkInv(InventoryItems item) {
+		for (int i = 0; i < inventory.length; i++) {
+			if(inventory[i] == null) {
+				return false;
+			}
+			if(inventory[i].itemNumber == item.itemNumber) {
+				return true;
+			}
+		}
+		return false; 
+	}
 	
 	public int invItemArrayNumber(InventoryItems item) {
 		for (int i = 0; i < 9; i++) {
@@ -300,6 +347,57 @@ public class Player {
 			}
 		}
 		return -1;
+	}
+	public int invItemArrayNumber(int itemNumber) {
+		for (int i = 0; i < 9; i++) {
+			if(this.inventory[i] == null) {
+				return -1;
+			}
+			if(this.inventory[i].itemNumber == itemNumber) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public void buyItems(InventoryItems item) {
+		if (item.price != 1) {
+			System.out.println("\"Would you like to buy " 
+				+ item.itemName + " for " + item.price + " Hides?\\\"\nEnter y to confirm");
+		} else {
+			System.out.println("\"Would you like to buy a " 
+					+ item.itemName + " for " + item.price + " Hide?\"");
+		}
+		String doTheyWantToBuyThisShit = in.nextLine();
+		if (doTheyWantToBuyThisShit.equals("y")) {
+			if (!(this.invItemArrayNumber(-1) == -1) &&
+					this.inventory[this.invItemArrayNumber(-1)].quantity >= item.price) {
+				removeItem(this.inventory[this.invItemArrayNumber(-1)], item.price);
+				addItem(item, item.attributes.quantitySold);
+			} else {
+				System.out.println("\"You don't have enough Hides man, go kill some cows.\"");
+			}
+		
+		}
+	}
+	
+	public void equip(InventoryItems item) {
+		if (this.equipment[item.attributes.equipSlot] == null &&
+				!(item.attributes.equipSlot == 0)) {
+			this.equipment[item.attributes.equipSlot] = item;
+			removeItem(item, 1);
+			System.out.println(item.itemName + " equipped to the the " 
+					+ InventoryItems.equipSlot(item.attributes.equipSlot + 1));
+			return;
+		} else { 
+			unEquip(this.equipment[item.attributes.equipSlot]);
+			equip(item);
+		}
+	}
+	
+	public void unEquip(InventoryItems item) {
+		addItem(item, 1);
+		this.equipment[item.attributes.equipSlot] = null;
 	}
 }
 

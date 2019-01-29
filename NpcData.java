@@ -45,7 +45,8 @@ public class NpcData {
 			//___Joe McShm'o's Dialogue___\\
 			String[] joeDialogue27 = {
 					"\"Sup man, names Joe McShm'o.\n"
-					+ " Listen, I got some good shit to trade for hides if you're lookin to barter.\""
+					+ "Listen, I got some good shit to trade for hides if you're lookin to barter.\n\""
+					+ "Here's a what's I gots: "
 			};
 			traderDialogue[27] = joeDialogue27;
 			
@@ -85,9 +86,7 @@ public class NpcData {
 		
 	}
 	
-//	public String[] nonStaticDialogue(int mapNumber, char npcChar, Player p) { 
-//		
-//	}
+	
 	
 	
 

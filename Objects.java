@@ -73,16 +73,12 @@ public class Objects {
 					player.addQuest(newQuest);
 			}
 		}
+			if (ObjectData.wantsToTrade(this.mapNumber, this.objChar)) {
+				ObjectData.printInv(ObjectData.traderInventories(this.mapNumber, this.player), player);
+			}
 	}
 			
-		
-		
-		
-//		if (ObjectData.wantsToTrade(this.mapNumber, this.objChar)) {
-//			
-//			
-//			//ObjectData.openInventory(this.mapNumber, this.objChar);
-//		}
+
 	}
 	
 	public void nonStaticNpcInteractions() { 
