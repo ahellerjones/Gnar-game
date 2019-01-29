@@ -18,8 +18,8 @@ Quest engine is pretty much finished.
 Added fully functioning stores, equip-able items, and equipment slots -- head, armor, necklace, weapon
 added commands: 
 
-1. equip <itemNumberInList> -- removes an item from inventory and equips it, 
+1. equip *itemNumberInList* -- removes an item from inventory and equips it, 
   
-2. unequip <itemNumberInList> -- removes an item from equipment to inventory, 
+2. unequip *itemNumberInList* -- removes an item from equipment to inventory, 
   
 3. equipment -- lists all equipment slots and items in them
