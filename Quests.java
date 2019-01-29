@@ -24,6 +24,8 @@ public class Quests {
 	
 	public static String[] nonStaticDialogue(char objectChar, Player p) {
 		switch (objectChar) {
+		case 't':
+			return NpcData.dialogueStorage(p.currentMap.mapNumber, objectChar);
 		case 'p': 
 			switch (p.currentMap.mapNumber) {
 				case 27: 
@@ -81,7 +83,7 @@ public class Quests {
 			//Marcy's cat
 			case 'ø':
 				boolean flag = false;
-				boolean flag2 = true;
+				
 				while (!flag) {
 					int i = 0;
 					if(p.quests == null || p.quests[i] == null)
@@ -99,7 +101,7 @@ public class Quests {
 						if(input.equals("1")) {
 							p.quests[p.getQuestArrayNumber(27)].decisionInt = 1;
 							InventoryItems cat = new InventoryItems(13, "Marcy's Cat", p);
-							p.addItem(cat);
+							p.addItem(cat, 1);
 							p.quests[p.getQuestArrayNumber(27)].currentIndex = 2;
 						
 						} else if (input.equals("2")) {
@@ -129,8 +131,11 @@ public class Quests {
 				case 27:	
 					if (p.quests[p.getQuestArrayNumber(27)].decisionInt == 1 && 
 						!p.quests[p.getQuestArrayNumber(27)].isComplete) {
+						
 						InventoryItems removedCat = new InventoryItems(13, "Marcy's Cat", p);
-						p.removeItem(removedCat);
+						p.removeItem(removedCat, 1);
+						InventoryItems Hides = new InventoryItems(-1, "Hides", p);
+						p.addItem(Hides, 7);
 						p.quests[p.getQuestArrayNumber(27)].isComplete = true;
 						p.quests[p.getQuestArrayNumber(27)].currentIndex = 3;
 						break;
