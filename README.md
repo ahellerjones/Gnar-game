@@ -8,6 +8,9 @@ Commands:
 2. questlist --- opens up a list of current quests
 3. inventory --- opens up a list of items in your inventory
 
-1/22/2019 update:
+01/22/2019 update:
 Finished Cat quest, debugged dialogue.
 Quest engine is pretty much finished.
+
+01/28/2019 update:
+Added fully functioning stores, equip-able items, and equipment slots -- head, armor, necklace, weapon
