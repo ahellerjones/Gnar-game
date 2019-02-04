@@ -7,7 +7,11 @@ Commands:
 1. mov *up, down, left, right* -- move the character 
 2. questlist -- opens up a list of current quests
 3. inventory -- opens up a list of items in your inventory
-
+4. exit -- takes you to the previous map, exit a building
+5. l 'x'
+  t -- gives you 9 hides or something
+  p -- teleports you to cathedral tavern
+  m -- begins marcy's quest and gives you the cat.
 -- 01/22/2019 update:
 Finished Cat quest, debugged dialogue.
 Quest engine is pretty much finished.
