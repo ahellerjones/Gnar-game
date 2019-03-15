@@ -1,6 +1,6 @@
 
 public class MapBuilder {
-	
+	public static boolean c12Flag = false;
 	
 	public static Objects[] getObjects(int mapNumber, Player p) { 
 		Objects[][] objects = new Objects[35][]; //increase this as needed to input more town / cave numbers
@@ -24,13 +24,18 @@ public class MapBuilder {
 		Objects T1 = new Objects('T', 2, 0, 12, p); //gnarivores
 		Objects T2 = new Objects('T', 2, 1, 12, p); //gnarivores
 		Objects T3 = new Objects('T', 3, 0, 12, p); //gnarivores
-		Objects E1 = new Objects('¬', 4, 4, 12, p);
+		Objects C1;
+		if (MapBuilder.c12Flag) { 
+			C1 = new Objects('d', 4, 4, 12, p);
+		} else {
+			C1 = new Objects('c', 4, 4, 12, p);
+		}
 		Objects[] ob12 = new Objects[4];
 		
 		ob12[0] = T1;
 		ob12[1] = T2;
 		ob12[2] = T3;
-		ob12[3] = E1;
+		ob12[3] = C1;
 		objects[12] = ob12;
 				//Map 26 -- map 12's Town
 				Objects Ω1 = new Objects('Ω', 2, 0, 26, p); 
