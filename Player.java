@@ -2,17 +2,25 @@ import java.util.Scanner;
 import java.util.Arrays;
 
 public class Player {
-	public static int[] 		loc = new int[2];
-	public static Map 			currentMap; 
-	public Scanner 				in = new Scanner(System.in);
-	public static boolean 		isInBuilding;
-	//public static String[] 	questList;
-	public static int 			playerQuestIndex;
-	public Quests[] quests = 	new Quests[10];
-	public static Map			lastMap;
-	InventoryItems[] inventory = new InventoryItems[10];
-	public static int 			inventoryIndex;
-	InventoryItems[] equipment = new InventoryItems[5];
+	public static int[] 			loc = new int[2];
+	public static Map 				currentMap; 
+	public Scanner 					in = new Scanner(System.in);
+	public static boolean 			isInBuilding;
+	//public static String[] 		questList;
+	public static int 				playerQuestIndex;
+	public Quests[] quests = 		new Quests[10];
+	public static Map				lastMap;
+	InventoryItems[] inventory = 	new InventoryItems[10];
+	public static int 				inventoryIndex;
+	InventoryItems[] equipment = 	new InventoryItems[5];
+	public int health;
+	/*		Modifiers indexing
+	 * 	 0. Attack = 	0;
+	 *	 1. Strength = 	0;
+	 *	 2. Defence 
+	 *	 3. hpModifier = 0;
+	 */
+	public int[] modifiers; 
 	
 	public Player(Map currentMap, int a, int b) {
 		loc[0] = a;
@@ -26,7 +34,8 @@ public class Player {
 		playerQuestIndex = 0;
 		lastMap = this.currentMap;
 		inventoryIndex = 0;
-		//this.questList = new String[10];
+		AccessoryMethods.addAttributes(equipment, this);
+		health = modifiers[3] + 10;
 	}
 	public void move(int movNum) { 
 		currentMap.coords[Player.loc[0]][Player.loc[1]] = '.';
@@ -148,9 +157,8 @@ public class Player {
 				break;
 			case "inventory":
 				boolean go = true;
-				
 				if(inventory[0] == null) { 
-					System.out.println("You don't have any items. Go explore and find some!");
+					System.out.println("\nYou don't have any items. Go explore and find some!\n");
 					break;
 				} else {
 					System.out.println("Inventory:");
@@ -162,19 +170,44 @@ public class Player {
 			case "equip":
 				String input5 = input.substring(input.indexOf(' ') + 1);
 				int inventoryNumber = Integer.parseInt(input5) - 1;
+				if(this.inventory[inventoryNumber] == null) {
+					System.out.println("Ain't got an item in that inventory spot boy");
+					break;
+				}
 				equip(this.inventory[inventoryNumber]);
+				AccessoryMethods.addAttributes(equipment, this);
 				break;
+			
+			case "unequip":
+				String input7000 = input.substring(input.indexOf(' ') + 1);
+				int lazyCodingNumber = Integer.parseInt(input7000);
+				if(this.equipment[lazyCodingNumber] == null) {
+					System.out.println("Ain't got an item in that equipment spot boy");
+					break;
+				}
+				unEquip(this.equipment[lazyCodingNumber]);
+				AccessoryMethods.addAttributes(equipment, this);
+				break;
+				
 			case "equipment":
 				//boolean go = true;
 				
 				for(int i = 1; i < 5; i++) {
 					if(equipment[i] == null) {
-						System.out.println(InventoryItems.equipSlot(i) + ": no item equipped");
+						System.out.println(InventoryItems.equipSlot(i) + ": no item equipped\n");
 					} else {
-					System.out.printf("%d. %s: %s\n",i, InventoryItems.equipSlot(i), equipment[i + 1].itemName);
+					System.out.printf("%d. %s: %s\n",i, InventoryItems.equipSlot(i), equipment[i].itemName);
 					}
 				}
-			
+				break;
+			case "stats":
+				int input4 = Integer.parseInt(input.substring(input.indexOf(' ') + 1));
+				if(equipment[input4] == null) {
+					System.out.println("You don't have anything equipped in that slot\n");
+				} else { 
+					Attributes.printAttributes(equipment[input4].attributes);
+				}
+				break;
 		}
 	}
 	public boolean boundaryCheck(int mov) {
@@ -259,7 +292,8 @@ public class Player {
 				return;
 			}
 		} 
-		System.out.println(inventory[invItemArrayNumber(item)].quantity + " Quantity");
+		//System.out.println(inventory[invItemArrayNumber(item)].quantity + " Quantity");
+		
 		final int indexOfItemToRemove = invItemArrayNumber(item);
 		final String itemRemoved = item.itemName;
 		inventory[indexOfItemToRemove] = null;
@@ -269,15 +303,13 @@ public class Player {
 				inventoryIndex -= 1;
 				break;
 			} else {
-				
 				inventory[i - 1] = inventory[i];
-				
 				inventory[i] = null;
 			}
 		}
 		
 		System.out.println(itemRemoved + " removed from inventory.");
-		System.out.println(inventoryIndex);
+		//System.out.println(inventoryIndex);
 		
 		
 	
@@ -382,22 +414,33 @@ public class Player {
 	}
 	
 	public void equip(InventoryItems item) {
+		if (item.attributes == null) {
+			System.out.println("\nThat item cannot be equipped\n");
+			return;
+		}
+		if(item.attributes.equipSlot < 0) {
+			item.consume();
+			return;
+		}
 		if (this.equipment[item.attributes.equipSlot] == null &&
 				!(item.attributes.equipSlot == 0)) {
 			this.equipment[item.attributes.equipSlot] = item;
 			removeItem(item, 1);
 			System.out.println(item.itemName + " equipped to the the " 
-					+ InventoryItems.equipSlot(item.attributes.equipSlot + 1));
+					+ InventoryItems.equipSlot(item.attributes.equipSlot));
 			return;
 		} else { 
 			unEquip(this.equipment[item.attributes.equipSlot]);
 			equip(item);
 		}
+		AccessoryMethods.addAttributes(equipment, this);
 	}
 	
 	public void unEquip(InventoryItems item) {
 		addItem(item, 1);
+		System.out.println(item.itemName + " removed from equipment.\n");
 		this.equipment[item.attributes.equipSlot] = null;
+		AccessoryMethods.addAttributes(equipment, this);
 	}
 }
 

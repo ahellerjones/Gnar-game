@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class ObjectData {
+	public static InventoryItems dropLists[][] = new InventoryItems[20][];
 	
 	public static String findName(int mapNumber, char objChar) { 
 		switch (objChar) { 
@@ -13,6 +14,8 @@ public class ObjectData {
 			case 't':
 				return npcNames(mapNumber, objChar);
 			case 'ø':
+				return npcNames(mapNumber, objChar);
+			case 'c':
 				return npcNames(mapNumber, objChar);
 		}
 		return ""; // stub
@@ -74,8 +77,22 @@ public class ObjectData {
 				return traderNames[mapNumber];
 			case 'ø':
 				return "Marcy's cat";
+			case 'c':
+				return "Cow";
 		}
 		return ""; // stub 
+	}
+	
+	/*
+	 * Attack, strength, defence, hp, level
+	 */
+	public static int[] npcArray(int mapNumber, char objChar) {
+		switch (objChar) { 
+			case 'c':
+				int[] cowArray = {1, 1, 3, 4, 2};
+				return cowArray;
+		}
+		return null; // stub 
 	}
 	/**
 	 * The purpose of out sourcing this method to a whole nother class is to try and keep things neater by not storing all the 
@@ -119,13 +136,13 @@ public class ObjectData {
 		switch (mapNumber) {
 		/*
 		 * InventoryItems: 	int mapNumber, String itemName, Player player, int price, Attributes itemAttributes
-		 * Attributes: 	int attack, int strength, int hpModifier, int hpHeal, int equipSlot, int quantitySold		 	
+		 * Attributes: 	int attack, int strength, defence int hpModifier, int hpHeal, int equipSlot, int quantitySold		 	
 		 */
 		
 		case 27:
-				Attributes p_b = new Attributes(5, 5, 0, 0, 3, 1);
+				Attributes p_b = new Attributes(5, 5, 0, 0, 0, 4, 1, true);
 				InventoryItems Plastic_Blade = new InventoryItems(-2, "Plastic Blade", p, 3, p_b);
-				Attributes t_l = new Attributes(0, 0, 0, 3, 0, 2);
+				Attributes t_l = new Attributes(0, 0, 0, 0, 3, -1, 2, false);
 				InventoryItems Turkey_Leg = new InventoryItems(-3, "Turkey Leg", p, 3, t_l);
 				InventoryItems[] inv27 = {Plastic_Blade, Turkey_Leg} ;
 				return inv27;
@@ -215,4 +232,58 @@ public class ObjectData {
 		return null;
 				
 	}
+	/* Use the quantity InventoryItems constructor
+	 * int mapNumber, String itemName, Player player, int price, Attributes itemAttributes,
+			int quantity
+	 */
+	public static InventoryItems[] npcDrops(int mapNumber, char objChar, Player p) {
+		InventoryItems[] cowDrops = new InventoryItems[2];
+		cowDrops[0] = new InventoryItems(-1, "Hides", p, 0, null, 3);
+		cowDrops[1] = new InventoryItems(-4, "Raw beef", p, 0, null, 1);
+		switch(objChar) {
+		case 'c':
+			return cowDrops;
+		
+		case 'd':
+			return dropLocations(mapNumber, objChar);
+		}
+	return null;
+	}
+	
+	public static void dropAdd(int mapNumber, char objChar, 
+			InventoryItems[] drops) {
+		switch (objChar) {
+		case 'c':
+			switch(mapNumber) {
+				case 12:
+					dropLists[0] = drops;
+					break;
+			}
+		break;
+		}
+		
+	}
+	public static InventoryItems[] dropLocations(int mapNumber, char objChar) {
+		switch (objChar) {
+			case 'd':
+				switch(mapNumber) {
+					case 12:
+						return dropLists[0];
+				}
+				break;
+		}
+		return null;
+	}
+	
+	public static void tripFlags(int mapNumber, char objChar) {
+		switch (objChar) {
+		case 'c':
+			switch(mapNumber) {
+				case 12:
+					MapBuilder.c12Flag = true;
+			}
+			break;
+		}
+	}
 }
+

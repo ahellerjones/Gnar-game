@@ -23,8 +23,8 @@ public class Interactions {
 	}
 	
 	
-	public void startQuest(int mapNumber) { 
-	
+	public void reLoadMap(int mapNumber) {  
+		this.player.changeMap(mapNumber);
 	
 	}
 	
