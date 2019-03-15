@@ -46,15 +46,21 @@ are written.
   might automatically be aggressive towards you. It is modeled on Old School RuneScape's combat.
   Hits are calculated based on what items you have equipped. You have 4 equipment stats, attack, defence, and
   hpModifier. 
+  
   Attack alters the accuracy of your hit, the higher you accuracy, the more often you hit
+  
   Strength alters the umph of your hit, the higher your strength bonus the higher max hit you have
+  
   Defence is your counter to your enemies attack, your accuracy is determined based on the ratio
   between your attack rating and your opponent's defence rating, and vice versa when enemies hit you. 
+  
   Between each turn of combat you have the option to attack again, run, or change equipment or heal.
   choosing run ends combat, but the enemey gets one extra hit on you as you run, so you can't just flee
   if you a fight isn't going your way! 
+  
   hpModifier boosts your hitpoints above your base health (10), but the boost is only active if you have 
   the modifying equipment on.
+  
   The command 'stats' will show you your current equipment bonuses.
   
 2. Food can now be eaten in and out of combat and heals a certain amount. You cannot heal over your hpModifier + base health.
