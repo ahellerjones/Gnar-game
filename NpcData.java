@@ -1,7 +1,6 @@
 
 public class NpcData {
 	/** Stores the dialogue data and returns based on the given map and npcCharacter
-	 *  Only problem is that you can only have one type of npc per map.
 	 *  
 	 * @param mapNumber 
 	 * @param npcChar
