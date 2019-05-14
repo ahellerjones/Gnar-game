@@ -29,6 +29,13 @@ public class Objects {
 			case 'Ω':
 				buildingInteractions();
 				break;
+			case '¢':
+				buildingInteractions();
+				break;
+			case 'œ':
+				npcInteractions();
+				Quests.nonStaticInteractions(this.mapNumber, this.objChar, this.player);
+				break;
 			case 'p':
 				npcInteractions();
 				Quests.nonStaticInteractions(this.mapNumber, this.objChar, this.player);
@@ -45,7 +52,15 @@ public class Objects {
 			case 'd':
 				openLoot();
 				break;
-		}
+			case 'g':
+				Quests.nonStaticInteractions(this.mapNumber, this.objChar, this.player);
+				break;
+			case 'r':
+				objectInteractions();
+				break;
+			case 'l':
+				combat();
+		}	
 	}
 	public void buildingInteractions() {
 			System.out.printf("Would you like to enter  %s?\n"
@@ -78,14 +93,13 @@ public class Objects {
 				System.out.printf("Help out %s? \n Enter y/n\n", this.objectName);
 				if(in.nextLine().equals("y")) { 
 					Quests newQuest = new Quests(this.mapNumber);
-					System.out.println(this.mapNumber);
 					player.addQuest(newQuest);
 			}
 		}
 			if (ObjectData.wantsToTrade(this.mapNumber, this.objChar)) {
 				ObjectData.printInv(ObjectData.traderInventories(this.mapNumber, this.player), player);
 			}
-	}
+		}
 			
 
 	}
@@ -177,10 +191,17 @@ public class Objects {
 	}
 	
 	public void openLoot() {
-		
 		AccessoryMethods.viewDrops(
 				ObjectData.dropLocations(this.mapNumber, this.objChar), this.player, this.objChar);
 	
+	}
+	
+	public void objectInteractions() {
+		System.out.println("Would you like to " + ObjectData.interactionType(this.objChar));
+		System.out.println("Enter y if you would like to");
+		if(in.nextLine().equals("y")) {
+			ObjectData.objectInteractionMethod(this.objChar, this.player);
+		}
 	}
 	
 }

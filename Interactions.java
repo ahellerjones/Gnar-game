@@ -16,6 +16,7 @@ public class Interactions {
 	}
 	
 	public void enterBuilding(int mapNumber) {
+		Player.enteringBuilding = true;
 		Map newMap = new Map(mapNumber, player); 
 		this.player.changeMap(mapNumber);
 		this.player.centerPlayer();

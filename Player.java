@@ -8,12 +8,13 @@ public class Player {
 	public static boolean 			isInBuilding;
 	//public static String[] 		questList;
 	public static int 				playerQuestIndex;
-	public Quests[] quests = 		new Quests[10];
+	public static Quests[] quests = 		new Quests[10];
 	public static Map				lastMap;
-	InventoryItems[] inventory = 	new InventoryItems[10];
+	public static InventoryItems[] inventory = 	new InventoryItems[10];
 	public static int 				inventoryIndex;
 	InventoryItems[] equipment = 	new InventoryItems[5];
 	public int health;
+	public static boolean enteringBuilding;
 	/*		Modifiers indexing
 	 * 	 0. Attack = 	0;
 	 *	 1. Strength = 	0;
@@ -39,20 +40,16 @@ public class Player {
 	}
 	public void move(int movNum) { 
 		currentMap.coords[Player.loc[0]][Player.loc[1]] = '.';
+		if(!(currentMap.isOverRiding() == '`')) {
+			currentMap.coords[Player.loc[0]][Player.loc[1]] = currentMap.isOverRiding();
+		}
+		
+		if(currentMap.isAdjacent(movNum)) {
+			System.out.println("Something is in your way and cannot move this direction");
+			action();
+		}
 		switch (movNum) {
 		case 0: // up
-//			if (loc[0] == 0 && currentMap.mapNumber < 5) {
-//				System.out.println("You cannot continue forward");
-//				currentMap.printMap();
-//				break;
-//			} else if (loc[0] == 0) { 
-//				//Map newmap = new Map(currentMap.mapNumber - 5);
-//				//currentMap = newmap;
-//				changeMap(currentMap.mapNumber - 5); //works fine
-//				loc[0] = 4;
-//				currentMap.printMap();
-//				break;
-//			}
 			if (!boundaryCheck(0)) { 
 				this.action();
 				break;
@@ -86,11 +83,14 @@ public class Player {
 			//currentMap.printMap();
 			break;	
 		}
-		for(int i = 0; i < currentMap.isAdjacent().length; i++) {
-			if(currentMap.isAdjacent()[i]) {
-				currentMap.objects[i].Interactions(currentMap.objects[i].objChar);
+		
+		boolean[] isAdjacent = currentMap.isAdjacent();
+			for(int i = 0; i < isAdjacent.length; i++) {
+				if(isAdjacent[i] && !enteringBuilding) {
+					currentMap.objects[i].Interactions(currentMap.objects[i].objChar);
+				}
 			}
-		}
+			enteringBuilding = false;
 	}
 	public void action() { 
 		currentMap.printMap();
@@ -129,8 +129,7 @@ public class Player {
 					if(quests[i]== null) { 
 						break;
 					}
-					System.out.println(quests[i].toString());
-					System.out.println(quests[0].questNumber + "    " + quests[0].currentIndex + this.pHasQuest(27));
+					System.out.printf("%d. %s\n\n", i + 1, quests[i].toString());
 					
 				}
 				break;
@@ -154,6 +153,29 @@ public class Player {
 					InventoryItems hides = new InventoryItems(-1, "Hides", this);
 					this.addItem(hides, 12);
 				}
+				if(input3.equals("l")) {
+					Attributes p_b = new Attributes(10, 10, 0, 0, 0, 4, 1, true);
+					InventoryItems Plastic_Blade = new InventoryItems(-2, "Plastic Blade", this, 3, p_b);
+					Attributes t_l = new Attributes(0, 0, 0, 0, 3, -1, 2, false);
+					InventoryItems Turkey_Leg = new InventoryItems(-3, "Turkey Leg", this, 3, t_l);
+					this.addItem(Turkey_Leg, 2);
+					this.addItem(Plastic_Blade, 1);
+				}
+				if(input3.equals("k")) {
+					this.changeMap(28);
+					Attributes wd = new Attributes(0, 0, 0, 0, 0, 0, 1, false);
+					InventoryItems Weed = new InventoryItems(13, "1g of Gilliweed", this, 2, wd);
+					addItem(Weed, 2);
+					addItem(InventoryItems.Raw_Beef, 1);
+					Quests main = new Quests(28);
+					addQuest(main);
+					main.increaseIndex();
+					main.increaseIndex();
+					Quests actualMain = new Quests(1);
+					addQuest(actualMain);
+					
+				}
+				
 				break;
 			case "inventory":
 				boolean go = true;
@@ -193,19 +215,40 @@ public class Player {
 				//boolean go = true;
 				
 				for(int i = 1; i < 5; i++) {
+//					if(equipment[i] == null && (i == 1 || i == 2)) {
+//						System.out.println(i + ". " + InventoryItems.equipSlot(i) + ":\t\t no item equipped");
+//					}
 					if(equipment[i] == null) {
-						System.out.println(InventoryItems.equipSlot(i) + ": no item equipped\n");
+						System.out.println(i + ". " + InventoryItems.equipSlot(i) + ":\t no item equipped");
 					} else {
-					System.out.printf("%d. %s: %s\n",i, InventoryItems.equipSlot(i), equipment[i].itemName);
+					System.out.printf("%d. %s:\t %s\n",i, InventoryItems.equipSlot(i), equipment[i].itemName);
 					}
+				}
+				
+				for (int j = 0; j < 4; j++) {
+//					System.out.printf(format, args)
 				}
 				break;
 			case "stats":
-				int input4 = Integer.parseInt(input.substring(input.indexOf(' ') + 1));
-				if(equipment[input4] == null) {
-					System.out.println("You don't have anything equipped in that slot\n");
-				} else { 
-					Attributes.printAttributes(equipment[input4].attributes);
+				// String jcsdim = (input.substring(input.indexOf(' ') + 1));
+				if ((input.substring(input.indexOf(' ') + 1).equals("stats"))) {
+					String[] modifierStrings = Attributes.modifierStrings(equipment);
+					for(int i = 0; i < 5; i++) {  
+						if((modifierStrings[i] != (null))) {
+							System.out.print(equipment[i].itemName + ":");
+							System.out.println(modifierStrings[i]);
+							System.out.println();;
+						}
+					}
+					System.out.println("Health: " + health);
+				} else {
+					int input4 = Integer.parseInt(input.substring(input.indexOf(' ') + 1));
+					if(equipment[input4] == null) {
+						System.out.println("You don't have anything equipped in that slot\n");
+					} else { 
+						Attributes.printAttributes(equipment[input4].attributes);
+					}
+					
 				}
 				break;
 		}
@@ -247,7 +290,7 @@ public class Player {
 	public void changeMap(int mapNumber) {
 		//Map newMap = new Map(mapNumber);
 		lastMap = currentMap;
-		this.currentMap = new Map(mapNumber, this);
+		Player.currentMap = new Map(mapNumber, this);
 	}
 	public void returnMap() { 
 		currentMap = new Map(Map.motherMap(currentMap.mapNumber), this);
@@ -273,18 +316,18 @@ public class Player {
 		quests[9] = null;
 	}
 		
-	public void addItem(InventoryItems item, int quantity) {
+	public static void addItem(InventoryItems item, int quantity) {
 		System.out.println(quantity + " " + 
 				item.itemName + " added to inventory");
 		if(checkInv(item)) {
-			this.inventory[invItemArrayNumber(item)].quantity += quantity;
+			inventory[invItemArrayNumber(item)].quantity += quantity;
 		} else {
-			this.inventory[inventoryIndex] = item;
-			this.inventory[inventoryIndex].quantity = quantity;
+			inventory[inventoryIndex] = item;
+			inventory[inventoryIndex].quantity = quantity;
 			inventoryIndex++;
 		}
 	}
-	public void removeItem(InventoryItems item, int quantityToRemove) {
+	public static void removeItem(InventoryItems item, int quantityToRemove) {
 		if(checkInv(item)) { 
 			inventory[invItemArrayNumber(item)].quantity -= quantityToRemove;
 			if (inventory[invItemArrayNumber(item)].quantity > 0) {
@@ -325,7 +368,10 @@ public class Player {
 		}
 		return null;
 	}
-	public int getQuestArrayNumber(int questNumber) {
+	public static int getQuestArrayNumber(int questNumber) {
+		if(quests[0] == null) {
+			return -1;
+		}
 		for (int i = 0; i < 10; i++) {
 			if(quests[i].questNumber == questNumber) {
 				return i;
@@ -334,7 +380,7 @@ public class Player {
 		return -1;
 	}
 	
-	public boolean pHasQuest(int mapNumber) {
+	public static boolean pHasQuest(int mapNumber) {
 		for (int i = 0; i < 10; i++) {
 			if(quests[i] == null) {
 				return false;
@@ -346,7 +392,7 @@ public class Player {
 		return false;
 	}
 	
-	public boolean checkInv(int mapNumber) {
+	public static boolean checkInv(int mapNumber) {
 		for (int i = 0; i < inventory.length; i++) {
 			if(inventory[i] == null) {
 				return false;
@@ -357,7 +403,7 @@ public class Player {
 		}
 		return false; 
 	}
-	public boolean checkInv(InventoryItems item) {
+	public static boolean checkInv(InventoryItems item) {
 		for (int i = 0; i < inventory.length; i++) {
 			if(inventory[i] == null) {
 				return false;
@@ -369,12 +415,12 @@ public class Player {
 		return false; 
 	}
 	
-	public int invItemArrayNumber(InventoryItems item) {
+	public static int invItemArrayNumber(InventoryItems item) {
 		for (int i = 0; i < 9; i++) {
-			if(this.inventory[i] == null) {
+			if(inventory[i] == null) {
 				return -1;
 			}
-			if(this.inventory[i].itemNumber == item.itemNumber) {
+			if(inventory[i].itemNumber == item.itemNumber) {
 				return i;
 			}
 		}
@@ -406,10 +452,28 @@ public class Player {
 					this.inventory[this.invItemArrayNumber(-1)].quantity >= item.price) {
 				removeItem(this.inventory[this.invItemArrayNumber(-1)], item.price);
 				addItem(item, item.attributes.quantitySold);
+				Quests.checkQuestItem(item, currentMap.mapNumber, this);
 			} else {
 				System.out.println("\"You don't have enough Hides man, go kill some cows.\"");
 			}
 		
+		}
+	}
+	public void sellItems(InventoryItems item) {
+		int sellingPrice = (item.price / 2) + 1;
+		if (item.price != 1) {
+			System.out.println("\"Would you like to sell " 
+				+ item.itemName + " for " + sellingPrice + " Hides?\\\"\nEnter y to confirm");
+		} else {
+			System.out.println("\"Would you like to buy a " 
+					+ item.itemName + " for " + sellingPrice + " Hide?\"");
+		}
+		String doTheyWantToBuyThisShit = in.nextLine();
+		if (doTheyWantToBuyThisShit.equals("y")) {
+			if(!(item.attributes == null)) {
+				removeItem(item, item.attributes.quantitySold);
+				addItem(InventoryItems.Hides, sellingPrice);
+			}	
 		}
 	}
 	
@@ -441,6 +505,12 @@ public class Player {
 		System.out.println(item.itemName + " removed from equipment.\n");
 		this.equipment[item.attributes.equipSlot] = null;
 		AccessoryMethods.addAttributes(equipment, this);
+	}
+	public static boolean hasCompletedQuest(int mapNumber) {
+		if(pHasQuest(mapNumber)) {
+			return quests[getQuestArrayNumber(mapNumber)].isComplete;
+		}
+		return false;
 	}
 }
 

@@ -20,11 +20,17 @@ public class Map {
 	
 	}	
 	// Checks to see if an object is adjacent
+	
+	/*
+	 * 0 up
+	 * 1 down
+	 * 2 left
+	 * 3 right
+	 */
+	
+	
 	public boolean[] isAdjacent() { 
-		boolean[] isAdjacent = new boolean[this.objects.length];
-		for (int i = 0; i < isAdjacent.length; i++) { 
-			isAdjacent[i] = false;
-		}
+		boolean[] isAdjacent = new boolean[this.objects.length]; // Set it as four to account for all possible movements
 		for(int i = 0; i < this.objects.length; i++) { 
 			// Check Up
 			if ((this.objects[i].objectLocation[0] == Player.loc[0] - 1)
@@ -49,6 +55,32 @@ public class Map {
 		}
 			return isAdjacent;
 	}
+	public boolean isAdjacent(int movNum) { 
+		boolean[] isAdjacent = new boolean[4]; // Set it as four to account for all possible movements
+		for(int i = 0; i < this.objects.length; i++) { 
+			// Check Up
+			if ((this.objects[i].objectLocation[0] == Player.loc[0] - 1)
+				&& (this.objects[i].objectLocation[1] == Player.loc[1])) {
+				isAdjacent[0] = true;;
+			}
+			// Check Down
+			if ((this.objects[i].objectLocation[0] == Player.loc[0] + 1)
+				&& (this.objects[i].objectLocation[1] == Player.loc[1] )) {
+				isAdjacent[1] = true;
+			}
+			// Check Right
+			if ((this.objects[i].objectLocation[1] == Player.loc[1] + 1)
+				&& (this.objects[i].objectLocation[0] == Player.loc[0] )) {
+				isAdjacent[3] = true;
+			}
+			//Check Left
+			if ((this.objects[i].objectLocation[1] == Player.loc[1] - 1)
+				&& (this.objects[i].objectLocation[0] == Player.loc[0])) {
+				isAdjacent[2] = true;
+			}
+		}
+			return isAdjacent[movNum];
+	}
 	
 	
 	public void printMap() {
@@ -67,8 +99,20 @@ public class Map {
 		motherMaps[0] = 	0;
 		motherMaps[26] = 	12;
 		motherMaps[27] = 	26;
+		motherMaps[28] = 	26;
 		
 		return motherMaps[mapNumber];
+	}
+	
+	public char isOverRiding() {
+		for (int i = 0; i < this.objects.length; i++ ) {
+			if(Player.loc[0] == objects[i].objectLocation[0] &&
+				Player.loc[1] == objects[i].objectLocation[1]) {
+				return objects[i].objChar;	
+			}
+		}
+		
+		return '`';
 	}
 	
 	

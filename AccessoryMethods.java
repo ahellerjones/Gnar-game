@@ -1,7 +1,9 @@
 import java.util.Scanner;
 
 public class AccessoryMethods {
+	InventoryItems[] c7Inv;
 	InventoryItems[] c12Inv;
+	InventoryItems[] d27Inv;
 	
 	/*
 	 * Attack - 5
@@ -11,12 +13,12 @@ public class AccessoryMethods {
 	 */
 	@SuppressWarnings("unused")
 	public static void addAttributes(InventoryItems[] equipment, Player p) {
-		int[] nullSet = {5, 5, 0, 0};
+		int[] nullSet = {5, 5, 5, 0};
 //		if (p.modifiers == null) {
 //			return nullSet;
 //		}
 		p.modifiers = nullSet;
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 4; i++) {
 			for(int j = 1; j < 5; j++) {
 				if (p.equipment[j] == null) {
 				} else {
@@ -29,7 +31,7 @@ public class AccessoryMethods {
 		// First number in the array is the damage the player gives,
 		// The second is the damage the enemy gives. 
 		int[] returnArray = new int[2];
-		double hit = Math.random() * (p.modifiers[0] / enemyArray[1]);
+		double hit = Math.random() * (p.modifiers[0] / enemyArray[2]);
 		hit += hit * ((p.modifiers[1] + 60) / 100);
 		if(hit % 1 < .5) {
 			returnArray[0] = (int) hit;
@@ -49,6 +51,7 @@ public class AccessoryMethods {
 	
 	public static void die(Player p) {
 		System.out.println("Oh dear, you are dead!");
+		p.changeMap(12);
 	}
 	public static InventoryItems[] viewDrops(InventoryItems[] drops, Player p, char objChar) {
 		Scanner in = new Scanner(System.in);
@@ -118,9 +121,42 @@ public class AccessoryMethods {
 			}
 		}
 	ObjectData.dropAdd(Player.currentMap.mapNumber, objChar, drops);	
+
 	p.changeMap(Player.currentMap.mapNumber);
 	return drops;
 	
+	}
+	public static void rangeCook() {
+		
+		if(!Player.hasCompletedQuest(Player.currentMap.mapNumber)) {
+			System.out.println("\nYou do not have permission to use this range\n");
+			return;
+		}
+		
+		Scanner in = new Scanner(System.in);
+		if (Player.inventory[0] == null) {
+			System.out.println("You have no items to cook!");
+		} else {
+			System.out.println("Enter the inventory index of the item you wish to cook");
+			for (int i = 0; i < Player.inventoryIndex; i++) {
+				System.out.printf("%d. %dx %s\n", i + 1, Player.inventory[i].quantity, Player.inventory[i].itemName);
+			}
+			int indexOfItemToCook = in.nextInt() - 1;
+			//Player.removeItem(Player.inventory[indexOfItemToCook], 1);
+			Player.addItem(cookItem(Player.inventory[indexOfItemToCook]), 1);
+		}
+	}
+	public static InventoryItems cookItem(InventoryItems item) { 
+		InventoryItems cookedList[] = new InventoryItems[30];
+		cookedList[3] = InventoryItems.Turkey_Leg;
+		cookedList[5] = InventoryItems.Beef;
+		Player.removeItem(Player.inventory[Player.invItemArrayNumber(item)], 1);		
+			if (item.attributes.equipSlot == -1 ||
+					item.attributes.equipSlot == -2) {
+				return(cookedList[-item.itemNumber]);
+		}
+			//Player.removeItem(Player.inventory[Player.invItemArrayNumber(item)], 1);
+		return null;
 	}
 }
 	
