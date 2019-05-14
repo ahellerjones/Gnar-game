@@ -72,6 +72,6 @@ are written.
 
 3. Added the start of the main quest, the ability to cook on ranges, and some new equipment.
 
--- 04/14/2019
+-- 05/14/2019
 
 Added the ability to sell items, some new equipment, and a miniboss: the **Evil Lizard Dude** who drops the first gear upgrade in the game: the Evil Lizard Sword, which is a significant upgrade over the plastic blade and can be sold for a fair amount. 
