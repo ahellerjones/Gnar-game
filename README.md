@@ -11,9 +11,15 @@ Commands:
 3. inventory -- opens up a list of items in your inventory
 4. exit -- takes you to the previous map, exit a building
 5. l 'x'
+  
   h -- gives you 12 hides to trade with
+  
   p -- teleports you to cathedral tavern
+  
   m -- begins marcy's quest and gives you the cat.
+  
+  l -- gives you two Turkey Legs and the Plastic Blade
+
 6. stats -- shows your current equipment bunuses
 7. equipment -- shows current equipment
 8. equip 'x' -- removes the item specified at inventory index 'x' and adds it to an equipment slot
@@ -22,7 +28,6 @@ Commands:
 -- 01/22/2019 update:
 Finished Cat quest, debugged dialogue.
 Quest engine is pretty much finished.
-
 
 
 -- 01/28/2019 update:
@@ -64,3 +69,9 @@ are written.
   The command 'stats' will show you your current equipment bonuses.
   
 2. Food can now be eaten in and out of combat and heals a certain amount. You cannot heal over your hpModifier + base health.
+
+3. Added the start of the main quest, the ability to cook on ranges, and some new equipment.
+
+-- 04/14/2019
+
+Added the ability to sell items, some new equipment, and a miniboss: the **Evil Lizard Dude** who drops the first gear upgrade in the game: the Evil Lizard Sword, which is a significant upgrade over the plastic blade and can be sold for a fair amount. 
