@@ -56,9 +56,9 @@ public class MapBuilder {
 		objects[12] = ob12;
 				//Map 26 -- map 12's Town
 				Objects p26 = new Objects('p', 4, 4, 26, p);
-				Objects Ω1 = new Objects('Ω', 2, 0, 26, p); 
-				Objects Ω2 = new Objects('Ω', 1, 0, 26, p);
-				Objects C4 = new Objects('¢', 2, 4, 26, p);
+				Objects o1 = new Objects('o', 2, 0, 26, p); 
+				Objects o2 = new Objects('o', 1, 0, 26, p);
+				Objects C4 = new Objects('�', 2, 4, 26, p);
 				Objects c26 = changeableObjects('c', 2, 2, 26, p); 
 //				if (MapBuilder.c26Flag) { 
 //					c26 = new Objects('d', 2, 2, 26, p);
@@ -69,8 +69,8 @@ public class MapBuilder {
 				
 				
 				Objects[] ob26 = new Objects[5];
-				ob26[0] = Ω1;
-				ob26[1] = Ω2;
+				ob26[0] = o1;
+				ob26[1] = o2;
 				ob26[2] = C4;
 				ob26[3] = c26;
 				ob26[4] = p26;
@@ -97,7 +97,7 @@ public class MapBuilder {
 							w6, w7, s1, s2, s3, s4, s5, s6};
 					objects[27] = ob27;
 					Objects r2 = new Objects('r', 2, 0, 28, p);
-					Objects p3 = new Objects('œ', 2, 3, 28, p);
+					Objects p3 = new Objects('�', 2, 3, 28, p);
 					Objects W1 = new Objects('_', 1, 0, 28, p);
 					Objects W2 = new Objects('_', 1, 1, 28, p);
 					Objects W3 = new Objects('_', 1, 2, 28, p);
@@ -116,7 +116,7 @@ public class MapBuilder {
 							W6, W7, S1, S2, S3, S4, S5, S6};
 					objects[28] = ob28;
 					
-		Objects c1 = new Objects('ø', 3, 3, 13, p);
+		Objects c1 = new Objects('�', 3, 3, 13, p);
 		Objects p13 = new Objects('t',0, 4, 13, p);
 		Objects[] ob13 = {c1, p13};
 		objects[13] = ob13;

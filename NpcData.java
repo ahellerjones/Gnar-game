@@ -9,7 +9,7 @@ public class NpcData {
 	 */
 	public static boolean isNonStatic(char objChar) {
 		char[] nonStaticChar = new char[10];
-		nonStaticChar[0] = 'ø';
+		nonStaticChar[0] = '.';
 		for(int i = 0; i < 10; i++) { 
 			if(objChar == nonStaticChar[i]) {
 				return true;
@@ -78,7 +78,7 @@ public class NpcData {
 			return talkerDialogue[mapNumber];
 		case 't':
 			return traderDialogue[mapNumber];
-		case 'œ':
+		case 'o':
 			return miscDialogue[mapNumber];
 			
 		}

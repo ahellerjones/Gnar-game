@@ -22,19 +22,19 @@ public class ObjectData {
 		switch (objChar) { 
 			case 'T':
 				return buildingNames(mapNumber, objChar);
-			case 'Î©':
+			case 'Î':
 				return buildingNames(mapNumber, objChar);
-			case 'Â¢': 
+			case 'Â': 
 				return buildingNames(mapNumber, objChar);
 			case 'p':
 				return npcNames(mapNumber, objChar);
 			case 't':
 				return npcNames(mapNumber, objChar);
-			case 'Ã¸':
+			case 'Ã':
 				return npcNames(mapNumber, objChar);
 			case 'c':
 				return npcNames(mapNumber, objChar);
-			case 'Å“':
+			case 'Å':
 				return npcNames(mapNumber, objChar);
 			case 'l':
 				return npcNames(mapNumber, objChar);
@@ -59,9 +59,9 @@ public class ObjectData {
 		switch (objChar) {
 			case 'T': 
 				return townNames[mapNumber];
-			case 'Î©':
+			case 'Î':
 				return tavernNames[mapNumber];
-			case 'Â¢':
+			case 'Â':
 				return messHallNames[mapNumber];
 		}
 		return ""; // stub.
@@ -85,9 +85,9 @@ public class ObjectData {
 		switch (objChar) { 
 			case 'T':
 				return 	townNumbers[mapNumber];
-			case 'Î©':
+			case 'Î':
 				return 	tavernNumbers[mapNumber];
-			case 'Â¢':
+			case 'Â':
 				return messHallNumbers[mapNumber];
 		}
 		
@@ -109,9 +109,9 @@ public class ObjectData {
 				return talkerNames[mapNumber];
 			case 't':
 				return traderNames[mapNumber];
-			case 'Ã¸':
+			case 'Ã':
 				return "Marcy's cat";
-			case 'Å“':
+			case 'Å':
 				return miscNames[mapNumber];
 			case 'c':
 				return "Cow";
@@ -158,7 +158,7 @@ public class ObjectData {
 			return hasQuest[mapNumber];
 		case 't':
 			return false;
-		case 'Ã¸':
+		case 'Ã':
 			return hasQuest[mapNumber];
 		}
 		
